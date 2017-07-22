@@ -101,4 +101,9 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
     public int getDataIndex(@NonNull Data data) {
         return mDataList.indexOf(data);
     }
+
+    @Override
+    public int getDataCount() {
+        return mDataList.size();
+    }
 }

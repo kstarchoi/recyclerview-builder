@@ -41,4 +41,6 @@ public interface ViewAdapter<Data> {
     Data getData(@IntRange(from = 0) int index);
 
     int getDataIndex(@NonNull Data data);
+
+    int getDataCount();
 }
