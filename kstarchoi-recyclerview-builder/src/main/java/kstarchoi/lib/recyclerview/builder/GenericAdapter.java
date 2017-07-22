@@ -25,6 +25,8 @@
 package kstarchoi.lib.recyclerview.builder;
 
 import android.content.Context;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,5 +86,19 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
         mDataList.clear();
         mDataList.addAll(dataList);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Data getData(@IntRange(from = 0) int index) {
+        if (index < 0 || index >= mDataList.size()) {
+            return null;
+        }
+
+        return mDataList.get(index);
+    }
+
+    @Override
+    public int getDataIndex(@NonNull Data data) {
+        return mDataList.indexOf(data);
     }
 }

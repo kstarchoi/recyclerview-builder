@@ -24,6 +24,9 @@
 
 package kstarchoi.lib.recyclerview.builder;
 
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -34,4 +37,8 @@ import java.util.List;
 public interface ViewAdapter<Data> {
 
     void setDataList(List<Data> dataList);
+
+    Data getData(@IntRange(from = 0) int index);
+
+    int getDataIndex(@NonNull Data data);
 }
