@@ -61,7 +61,18 @@ public class MainActivity extends AppCompatActivity {
                 .setViewBinder(new DefaultViewBinder<Integer>() {
                     @Override
                     public void bind(ViewProvider provider, int index, Integer integer) {
-                        String message = String.format(Locale.getDefault(), "Data: %5d", integer);
+                        String message;
+                        if (!provider.hasPayload()) {
+                            message = String.format(Locale.getDefault(), "Data: %5d", integer);
+                        } else {
+                            int one = provider.getPayload(0);
+                            String two = provider.getPayload(1);
+                            float three = provider.getPayload(2);
+                            message = String.format(Locale.getDefault(),
+                                    "Data: %5d, Payload: %d, %s, %.1f",
+                                    integer, one, two, three);
+                        }
+
                         TextView textView = provider.get(android.R.id.text1);
                         textView.setText(message);
                     }
@@ -97,6 +108,30 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.menu_data_control_remove_multiple_data: {
                 mViewAdapter.removeData(0, 3);
+                return true;
+            }
+            case R.id.menu_data_control_change_data: {
+                mViewAdapter.changeData(0, lastInteger++);
+                return true;
+            }
+            case R.id.menu_data_control_change_data_with_payload: {
+                mViewAdapter.changeData(0, lastInteger++, 1, "2", 3.0F);
+                return true;
+            }
+            case R.id.menu_data_control_change_multiple_data: {
+                List<Integer> integerList = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    integerList.add(lastInteger++);
+                }
+                mViewAdapter.changeData(0, integerList);
+                return true;
+            }
+            case R.id.menu_data_control_change_multiple_data_with_payload: {
+                List<Integer> integerList = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    integerList.add(lastInteger++);
+                }
+                mViewAdapter.changeData(0, integerList, 1, "2", 3.0F);
                 return true;
             }
             default: {

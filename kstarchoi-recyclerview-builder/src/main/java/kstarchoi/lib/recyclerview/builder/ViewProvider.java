@@ -25,6 +25,7 @@
 package kstarchoi.lib.recyclerview.builder;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
 import android.view.View;
 
 /**
@@ -37,4 +38,8 @@ public interface ViewProvider {
     int getViewType();
 
     <T extends View> T get(@IdRes int idRes);
+
+    boolean hasPayload();
+
+    <T> T getPayload(@IntRange(from = 0) int index);
 }

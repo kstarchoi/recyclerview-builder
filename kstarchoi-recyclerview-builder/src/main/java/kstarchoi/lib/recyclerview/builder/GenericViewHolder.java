@@ -25,9 +25,15 @@
 package kstarchoi.lib.recyclerview.builder;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Gwangseong Choi
@@ -39,6 +45,7 @@ class GenericViewHolder extends RecyclerView.ViewHolder
 
     private int mViewType;
     private SparseArray<View> mViewSparseArray = new SparseArray<>();
+    private List<Object> mPayloadList = new ArrayList<>();
 
     GenericViewHolder(View itemView, int viewType) {
         super(itemView);
@@ -74,5 +81,37 @@ class GenericViewHolder extends RecyclerView.ViewHolder
     @Override
     public <T extends View> T get(@IdRes int idRes) {
         return (T) mViewSparseArray.get(idRes);
+    }
+
+    void setPayloads(@NonNull List<Object> payloadList) {
+        if (payloadList.isEmpty()) {
+            return;
+        }
+
+        Object[] payloads = (Object[]) payloadList.get(0);
+        Collections.addAll(mPayloadList, payloads);
+    }
+
+    @Override
+    public boolean hasPayload() {
+        return !mPayloadList.isEmpty();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getPayload(@IntRange(from = 0) int index) {
+        if (index < 0 || index >= mPayloadList.size()) {
+            return null;
+        }
+
+        return (T) mPayloadList.get(index);
+    }
+
+    void clearPayloads() {
+        if (mPayloadList.isEmpty()) {
+            return;
+        }
+
+        mPayloadList.clear();
     }
 }

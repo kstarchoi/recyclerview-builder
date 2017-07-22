@@ -73,6 +73,13 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
     }
 
     @Override
+    public void onBindViewHolder(GenericViewHolder holder, int position, List<Object> payloads) {
+        holder.setPayloads(payloads);
+        super.onBindViewHolder(holder, position, payloads);
+        holder.clearPayloads();
+    }
+
+    @Override
     public int getItemCount() {
         return mDataList.size();
     }
@@ -163,6 +170,42 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
             mDataList.remove(i);
         }
         notifyItemRangeRemoved(index, dataCount);
+        return true;
+    }
+
+    @Override
+    public boolean changeData(@IntRange(from = 0) int index, @NonNull Data data,
+                              Object... payloads) {
+        if (index < 0 || index >= mDataList.size()) {
+            return false;
+        }
+
+        mDataList.set(index, data);
+        notifyItemChanged(index, (payloads.length == 0) ? null : payloads);
+        return true;
+    }
+
+    @Override
+    public boolean changeData(@IntRange(from = 0) int index, @NonNull List<Data> dataList,
+                              Object... payloads) {
+        if (index < 0 || index >= mDataList.size()) {
+            return false;
+        }
+
+        int dataCount = dataList.size();
+        if (dataCount < 1) {
+            return false;
+        }
+
+        int lastIndex = index + dataCount - 1;
+        if (lastIndex >= mDataList.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < dataCount; i++) {
+            mDataList.set(index + i, dataList.get(i));
+        }
+        notifyItemRangeChanged(index, dataCount, (payloads.length == 0) ? null : payloads);
         return true;
     }
 }

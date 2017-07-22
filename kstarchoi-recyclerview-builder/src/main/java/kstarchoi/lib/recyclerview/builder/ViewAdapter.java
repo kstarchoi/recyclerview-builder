@@ -51,4 +51,8 @@ public interface ViewAdapter<Data> {
     boolean removeData(@IntRange(from = 0) int index);
 
     boolean removeData(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount);
+
+    boolean changeData(@IntRange(from = 0) int index, @NonNull Data data, Object... payloads);
+
+    boolean changeData(@IntRange(from = 0) int index, @NonNull List<Data> dataList, Object... payloads);
 }
