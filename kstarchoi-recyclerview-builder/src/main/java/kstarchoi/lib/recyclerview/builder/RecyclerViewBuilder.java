@@ -24,9 +24,63 @@
 
 package kstarchoi.lib.recyclerview.builder;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.List;
+
 /**
  * @author Gwangseong Choi
  * @since 2017-07-22
  */
-public class RecyclerViewBuilder {
+
+public class RecyclerViewBuilder<Data> {
+
+    private final RecyclerView mRecyclerView;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ViewBinder<Data> mViewBinder;
+
+    public RecyclerViewBuilder(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+        mLayoutManager = recyclerView.getLayoutManager();
+        mViewBinder = new DefaultViewBinder<>();
+    }
+
+    public RecyclerViewBuilder<Data> setLayoutManager(
+            @NonNull RecyclerView.LayoutManager layoutManager) {
+        mLayoutManager = layoutManager;
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setViewBinder(@NonNull ViewBinder<Data> viewBinder) {
+        mViewBinder = viewBinder;
+        return this;
+    }
+
+    public ViewAdapter<Data> build() {
+        RecyclerView.LayoutManager layoutManager = getLayoutManager();
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        GenericAdapter<Data> genericAdapter = new GenericAdapter<>(mViewBinder);
+        mRecyclerView.setAdapter(genericAdapter);
+
+        return genericAdapter;
+    }
+
+    private RecyclerView.LayoutManager getLayoutManager() {
+        if (mLayoutManager != null) {
+            return mLayoutManager;
+        }
+
+        return new LinearLayoutManager(mRecyclerView.getContext());
+    }
+
+
+    public ViewAdapter<Data> build(@NonNull List<Data> dataList) {
+        ViewAdapter<Data> viewAdapter = build();
+        viewAdapter.setDataList(dataList);
+        return viewAdapter;
+    }
 }

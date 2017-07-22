@@ -22,31 +22,18 @@
  * SOFTWARE.
  */
 
-package kstarchoi.recyclerviewbuilder;
+package kstarchoi.lib.recyclerview.builder;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.IdRes;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author Gwangseong Choi
+ * @since 2017-07-22
+ */
 
-import kstarchoi.lib.recyclerview.builder.RecyclerViewBuilder;
+public interface ViewPreparer {
 
-public class MainActivity extends AppCompatActivity {
+    int getViewType();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        List<Integer> integerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            integerList.add(i);
-        }
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        new RecyclerViewBuilder<Integer>(recyclerView)
-                .build(integerList);
-    }
+    void reserve(@IdRes int... idResArray);
 }

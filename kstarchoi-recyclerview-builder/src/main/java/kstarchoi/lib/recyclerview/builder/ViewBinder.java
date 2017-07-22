@@ -22,31 +22,20 @@
  * SOFTWARE.
  */
 
-package kstarchoi.recyclerviewbuilder;
+package kstarchoi.lib.recyclerview.builder;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+/**
+ * @author Gwangseong Choi
+ * @since 2017-07-22
+ */
 
-import java.util.ArrayList;
-import java.util.List;
+public interface ViewBinder<Data> {
 
-import kstarchoi.lib.recyclerview.builder.RecyclerViewBuilder;
+    int getViewType(int index, Data data);
 
-public class MainActivity extends AppCompatActivity {
+    int getViewLayoutRes(int viewType);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    void init(ViewPreparer preparer);
 
-        List<Integer> integerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            integerList.add(i);
-        }
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        new RecyclerViewBuilder<Integer>(recyclerView)
-                .build(integerList);
-    }
+    void bind(ViewProvider provider, int index, Data data);
 }

@@ -22,31 +22,38 @@
  * SOFTWARE.
  */
 
-package kstarchoi.recyclerviewbuilder;
+package kstarchoi.lib.recyclerview.builder;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-import kstarchoi.lib.recyclerview.builder.RecyclerViewBuilder;
+/**
+ * @author Gwangseong Choi
+ * @since 2017-07-22
+ */
 
-public class MainActivity extends AppCompatActivity {
+public class DefaultViewBinder<Data> implements ViewBinder<Data> {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getViewType(int index, Data data) {
+        return 0;
+    }
 
-        List<Integer> integerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            integerList.add(i);
-        }
+    @Override
+    public int getViewLayoutRes(int viewType) {
+        return android.R.layout.simple_list_item_1;
+    }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        new RecyclerViewBuilder<Integer>(recyclerView)
-                .build(integerList);
+    @Override
+    public void init(ViewPreparer preparer) {
+        preparer.reserve(android.R.id.text1);
+    }
+
+    @Override
+    public void bind(ViewProvider provider, int index, Data data) {
+        TextView textView = provider.get(android.R.id.text1);
+        String message = String.format(Locale.getDefault(), "%d. Default item", (index + 1));
+        textView.setText(message);
     }
 }
