@@ -208,4 +208,24 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
         notifyItemRangeChanged(index, dataCount, (payloads.length == 0) ? null : payloads);
         return true;
     }
+
+    @Override
+    public boolean moveData(@IntRange(from = 0) int fromIndex, @IntRange(from = 0) int toIndex) {
+        if (fromIndex < 0 || fromIndex >= mDataList.size()) {
+            return false;
+        }
+
+        if (toIndex < 0 || toIndex >= mDataList.size()) {
+            return false;
+        }
+
+        if (fromIndex == toIndex) {
+            return false;
+        }
+
+        Data data = mDataList.remove(fromIndex);
+        mDataList.add(toIndex, data);
+        notifyItemMoved(fromIndex, toIndex);
+        return true;
+    }
 }

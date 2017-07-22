@@ -134,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 mViewAdapter.changeData(0, integerList, 1, "2", 3.0F);
                 return true;
             }
+            case R.id.menu_data_control_move_data: {
+                mViewAdapter.moveData(0, 2);
+                return true;
+            }
             default: {
                 return super.onOptionsItemSelected(item);
             }

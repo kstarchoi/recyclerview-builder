@@ -55,4 +55,6 @@ public interface ViewAdapter<Data> {
     boolean changeData(@IntRange(from = 0) int index, @NonNull Data data, Object... payloads);
 
     boolean changeData(@IntRange(from = 0) int index, @NonNull List<Data> dataList, Object... payloads);
+
+    boolean moveData(@IntRange(from = 0) int fromIndex, @IntRange(from = 0) int toIndex);
 }

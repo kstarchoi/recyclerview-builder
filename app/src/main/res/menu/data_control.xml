@@ -47,4 +47,7 @@
     <item
         android:id="@+id/menu_data_control_change_multiple_data_with_payload"
         android:title="@string/data_control_change_multiple_data_with_payload" />
+    <item
+        android:id="@+id/menu_data_control_move_data"
+        android:title="@string/data_control_move_data" />
 </menu>
