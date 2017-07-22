@@ -43,4 +43,12 @@ public interface ViewAdapter<Data> {
     int getDataIndex(@NonNull Data data);
 
     int getDataCount();
+
+    boolean insertData(@IntRange(from = 0) int index, @NonNull Data data);
+
+    boolean insertData(@IntRange(from = 0) int index, @NonNull List<Data> dataList);
+
+    boolean removeData(@IntRange(from = 0) int index);
+
+    boolean removeData(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount);
 }

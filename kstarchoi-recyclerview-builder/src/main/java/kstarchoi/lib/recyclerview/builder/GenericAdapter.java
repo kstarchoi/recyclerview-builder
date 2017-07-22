@@ -106,4 +106,63 @@ class GenericAdapter<Data> extends RecyclerView.Adapter<GenericViewHolder>
     public int getDataCount() {
         return mDataList.size();
     }
+
+    @Override
+    public boolean insertData(@IntRange(from = 0) int index, @NonNull Data data) {
+        if (index < 0 || index > mDataList.size()) {
+            return false;
+        }
+
+        mDataList.add(index, data);
+        notifyItemInserted(index);
+        return true;
+    }
+
+    @Override
+    public boolean insertData(@IntRange(from = 0) int index, @NonNull List<Data> dataList) {
+        if (index < 0 || index > mDataList.size()) {
+            return false;
+        }
+
+        if (dataList.isEmpty()) {
+            return false;
+        }
+
+        mDataList.addAll(index, dataList);
+        notifyItemRangeInserted(index, dataList.size());
+        return true;
+    }
+
+    @Override
+    public boolean removeData(@IntRange(from = 0) int index) {
+        if (index < 0 || index >= mDataList.size()) {
+            return false;
+        }
+
+        mDataList.remove(index);
+        notifyItemRemoved(index);
+        return true;
+    }
+
+    @Override
+    public boolean removeData(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount) {
+        if (index < 0 || index >= mDataList.size()) {
+            return false;
+        }
+
+        if (dataCount < 1) {
+            return false;
+        }
+
+        int lastIndex = index + dataCount - 1;
+        if (lastIndex >= mDataList.size()) {
+            return false;
+        }
+
+        for (int i = lastIndex; i >= index; i--) {
+            mDataList.remove(i);
+        }
+        notifyItemRangeRemoved(index, dataCount);
+        return true;
+    }
 }

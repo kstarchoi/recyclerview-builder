@@ -27,13 +27,24 @@ package kstarchoi.recyclerviewbuilder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import kstarchoi.lib.recyclerview.builder.DefaultViewBinder;
 import kstarchoi.lib.recyclerview.builder.RecyclerViewBuilder;
+import kstarchoi.lib.recyclerview.builder.ViewAdapter;
+import kstarchoi.lib.recyclerview.builder.ViewProvider;
 
 public class MainActivity extends AppCompatActivity {
+
+    private int lastInteger = 5;
+    private ViewAdapter<Integer> mViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +52,56 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         List<Integer> integerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < lastInteger; i++) {
             integerList.add(i);
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        new RecyclerViewBuilder<Integer>(recyclerView)
+        mViewAdapter = new RecyclerViewBuilder<Integer>(recyclerView)
+                .setViewBinder(new DefaultViewBinder<Integer>() {
+                    @Override
+                    public void bind(ViewProvider provider, int index, Integer integer) {
+                        String message = String.format(Locale.getDefault(), "Data: %5d", integer);
+                        TextView textView = provider.get(android.R.id.text1);
+                        textView.setText(message);
+                    }
+                })
                 .build(integerList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.data_control, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_data_control_insert_data: {
+                mViewAdapter.insertData(0, lastInteger++);
+                return true;
+            }
+            case R.id.menu_data_control_insert_multiple_data: {
+                List<Integer> integerList = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    integerList.add(lastInteger++);
+                }
+                mViewAdapter.insertData(0, integerList);
+                return true;
+            }
+            case R.id.menu_data_control_remove_data: {
+                mViewAdapter.removeData(0);
+                return true;
+            }
+            case R.id.menu_data_control_remove_multiple_data: {
+                mViewAdapter.removeData(0, 3);
+                return true;
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 }
