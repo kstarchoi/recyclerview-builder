@@ -22,4 +22,11 @@
  * SOFTWARE.
  */
 
-include ':app', ':kstarchoi-recyclerview-builder'
+package kstarchoi.lib.recyclerview.builder;
+
+/**
+ * @author Gwangseong Choi
+ * @since 2017-07-22
+ */
+public class RecyclerViewBuilder {
+}
