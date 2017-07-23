@@ -26,6 +26,7 @@ package kstarchoi.recyclerviewbuilder;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+                .setItemAnimator(new DefaultItemAnimator())
                 .build(integerList);
     }
 

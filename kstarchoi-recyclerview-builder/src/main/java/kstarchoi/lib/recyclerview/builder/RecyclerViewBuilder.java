@@ -43,6 +43,7 @@ public class RecyclerViewBuilder<Data> {
     private RecyclerView.LayoutManager mLayoutManager;
     private ViewBinder<Data> mViewBinder;
     private List<RecyclerView.ItemDecoration> mItemDecorationList;
+    private RecyclerView.ItemAnimator mItemAnimator;
 
     public RecyclerViewBuilder(@NonNull RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
@@ -70,6 +71,11 @@ public class RecyclerViewBuilder<Data> {
         return this;
     }
 
+    public RecyclerViewBuilder<Data> setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
+        mItemAnimator = itemAnimator;
+        return this;
+    }
+
     public ViewAdapter<Data> build() {
         RecyclerView.LayoutManager layoutManager = getLayoutManager();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -80,6 +86,8 @@ public class RecyclerViewBuilder<Data> {
         for (RecyclerView.ItemDecoration itemDecoration : mItemDecorationList) {
             mRecyclerView.addItemDecoration(itemDecoration);
         }
+
+        mRecyclerView.setItemAnimator(mItemAnimator);
 
         return genericAdapter;
     }
