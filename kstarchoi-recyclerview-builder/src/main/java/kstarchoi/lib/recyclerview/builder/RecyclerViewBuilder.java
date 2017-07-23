@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +42,13 @@ public class RecyclerViewBuilder<Data> {
 
     private RecyclerView.LayoutManager mLayoutManager;
     private ViewBinder<Data> mViewBinder;
+    private List<RecyclerView.ItemDecoration> mItemDecorationList;
 
     public RecyclerViewBuilder(@NonNull RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         mLayoutManager = recyclerView.getLayoutManager();
         mViewBinder = new DefaultViewBinder<>();
+        mItemDecorationList = new ArrayList<>();
     }
 
     public RecyclerViewBuilder<Data> setLayoutManager(
@@ -59,12 +62,24 @@ public class RecyclerViewBuilder<Data> {
         return this;
     }
 
+    public RecyclerViewBuilder<Data> addItemDecoration(
+            @NonNull RecyclerView.ItemDecoration itemDecoration) {
+        if (mItemDecorationList.indexOf(itemDecoration) == -1) {
+            mItemDecorationList.add(itemDecoration);
+        }
+        return this;
+    }
+
     public ViewAdapter<Data> build() {
         RecyclerView.LayoutManager layoutManager = getLayoutManager();
         mRecyclerView.setLayoutManager(layoutManager);
 
         GenericAdapter<Data> genericAdapter = new GenericAdapter<>(mViewBinder);
         mRecyclerView.setAdapter(genericAdapter);
+
+        for (RecyclerView.ItemDecoration itemDecoration : mItemDecorationList) {
+            mRecyclerView.addItemDecoration(itemDecoration);
+        }
 
         return genericAdapter;
     }
