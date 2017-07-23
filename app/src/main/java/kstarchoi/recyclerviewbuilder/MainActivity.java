@@ -24,127 +24,96 @@
 
 package kstarchoi.recyclerviewbuilder;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import kstarchoi.lib.recyclerview.builder.DefaultViewBinder;
 import kstarchoi.lib.recyclerview.builder.RecyclerViewBuilder;
-import kstarchoi.lib.recyclerview.builder.ViewAdapter;
 import kstarchoi.lib.recyclerview.builder.ViewProvider;
+
+/**
+ * @author Gwangseong Choi
+ * @since 2017-07-22
+ */
 
 public class MainActivity extends AppCompatActivity {
 
-    private int lastInteger = 5;
-    private ViewAdapter<Integer> mViewAdapter;
+    private int mSelectableItemBackgroundRes = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Integer> integerList = new ArrayList<>();
-        for (int i = 0; i < lastInteger; i++) {
-            integerList.add(i);
-        }
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mViewAdapter = new RecyclerViewBuilder<Integer>(recyclerView)
-                .setViewBinder(new DefaultViewBinder<Integer>() {
+        new RecyclerViewBuilder<ActivityInfo>(recyclerView)
+                .setViewBinder(new DefaultViewBinder<ActivityInfo>() {
                     @Override
-                    public void bind(ViewProvider provider, int index, Integer integer) {
-                        String message;
-                        if (!provider.hasPayload()) {
-                            message = String.format(Locale.getDefault(), "Data: %5d", integer);
-                        } else {
-                            int one = provider.getPayload(0);
-                            String two = provider.getPayload(1);
-                            float three = provider.getPayload(2);
-                            message = String.format(Locale.getDefault(),
-                                    "Data: %5d, Payload: %d, %s, %.1f",
-                                    integer, one, two, three);
-                        }
-
+                    public void bind(ViewProvider provider, int index, ActivityInfo activityInfo) {
                         TextView textView = provider.get(android.R.id.text1);
-                        textView.setText(message);
+                        textView.setText(activityInfo.getTitleResId());
+
+                        View rootView = provider.getRoot();
+                        rootView.setBackgroundResource(getSelectableItemBackgroundRes());
+
+                        final Class<?> activityClass = activityInfo.getActivityClass();
+                        rootView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), activityClass);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 })
                 .addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-                .setItemAnimator(new DefaultItemAnimator())
-                .build(integerList);
+                .build(createActivityInfoList());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.data_control, menu);
-        return true;
+    private List<ActivityInfo> createActivityInfoList() {
+        List<ActivityInfo> activityInfoList = new ArrayList<>();
+        activityInfoList.add(new ActivityInfo(R.string.example_basic, BasicExampleActivity.class));
+        activityInfoList.add(new ActivityInfo(R.string.example_data_control, DataControlExampleActivity.class));
+        return activityInfoList;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_data_control_insert_data: {
-                mViewAdapter.insertData(0, lastInteger++);
-                return true;
-            }
-            case R.id.menu_data_control_insert_multiple_data: {
-                List<Integer> integerList = new ArrayList<>();
-                for (int i = 0; i < 3; i++) {
-                    integerList.add(lastInteger++);
-                }
-                mViewAdapter.insertData(0, integerList);
-                return true;
-            }
-            case R.id.menu_data_control_remove_data: {
-                mViewAdapter.removeData(0);
-                return true;
-            }
-            case R.id.menu_data_control_remove_multiple_data: {
-                mViewAdapter.removeData(0, 3);
-                return true;
-            }
-            case R.id.menu_data_control_change_data: {
-                mViewAdapter.changeData(0, lastInteger++);
-                return true;
-            }
-            case R.id.menu_data_control_change_data_with_payload: {
-                mViewAdapter.changeData(0, lastInteger++, 1, "2", 3.0F);
-                return true;
-            }
-            case R.id.menu_data_control_change_multiple_data: {
-                List<Integer> integerList = new ArrayList<>();
-                for (int i = 0; i < 3; i++) {
-                    integerList.add(lastInteger++);
-                }
-                mViewAdapter.changeData(0, integerList);
-                return true;
-            }
-            case R.id.menu_data_control_change_multiple_data_with_payload: {
-                List<Integer> integerList = new ArrayList<>();
-                for (int i = 0; i < 3; i++) {
-                    integerList.add(lastInteger++);
-                }
-                mViewAdapter.changeData(0, integerList, 1, "2", 3.0F);
-                return true;
-            }
-            case R.id.menu_data_control_move_data: {
-                mViewAdapter.moveData(0, 2);
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
+    private int getSelectableItemBackgroundRes() {
+        if (mSelectableItemBackgroundRes == -1) {
+            TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
+            mSelectableItemBackgroundRes = typedValue.resourceId;
+        }
+
+        return mSelectableItemBackgroundRes;
+    }
+
+
+    private class ActivityInfo {
+
+        private int mTitleResId;
+        private Class<?> mActivityClass;
+
+        ActivityInfo(@StringRes int titleResId, Class<?> activityClass) {
+            mTitleResId = titleResId;
+            mActivityClass = activityClass;
+        }
+
+        int getTitleResId() {
+            return mTitleResId;
+        }
+
+        Class<?> getActivityClass() {
+            return mActivityClass;
         }
     }
 }

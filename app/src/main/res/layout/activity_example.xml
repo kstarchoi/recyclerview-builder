@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2017 Gwangseong Choi
@@ -22,18 +22,20 @@
   ~ SOFTWARE.
   -->
 
-<resources>
-    <string name="app_name">RecyclerViewBuilder</string>
-    <string name="data_control_insert_data">Insert data</string>
-    <string name="data_control_insert_multiple_data">Insert multiple data</string>
-    <string name="data_control_remove_data">Remove data</string>
-    <string name="data_control_remove_multiple_data">Remove multiple data</string>
-    <string name="data_control_change_data">Change data</string>
-    <string name="data_control_change_data_with_payload">Change data with payload</string>
-    <string name="data_control_change_multiple_data">Change multiple data</string>
-    <string name="data_control_change_multiple_data_with_payload">Change multiple data with payload</string>
-    <string name="data_control_move_data">Move data</string>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kstarchoi.recyclerviewbuilder.BasicExampleActivity">
 
-    <string name="example_basic">Basic Example</string>
-    <string name="example_data_control">Data control Example</string>
-</resources>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
