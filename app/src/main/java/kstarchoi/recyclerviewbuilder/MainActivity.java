@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         activityInfoList.add(new ActivityInfo(R.string.example_basic, BasicExampleActivity.class));
         activityInfoList.add(new ActivityInfo(R.string.example_data_control, DataControlExampleActivity.class));
         activityInfoList.add(new ActivityInfo(R.string.example_layout_manager, LayoutManagerExampleActivity.class));
+        activityInfoList.add(new ActivityInfo(R.string.example_application, ApplicationExampleActivity.class));
         return activityInfoList;
     }
 

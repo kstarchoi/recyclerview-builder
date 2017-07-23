@@ -56,6 +56,10 @@
             android:name=".LayoutManagerExampleActivity"
             android:label="@string/example_layout_manager"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ApplicationExampleActivity"
+            android:label="@string/example_application"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
