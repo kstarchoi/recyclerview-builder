@@ -24,9 +24,14 @@
 
 package kstarchoi.lib.recyclerview.builder;
 
+import android.content.Context;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,23 +43,60 @@ import java.util.List;
 
 public class RecyclerViewBuilder<Data> {
 
+    private static final int HORIZONTAL = OrientationHelper.HORIZONTAL;
+    private static final int VERTICAL = OrientationHelper.VERTICAL;
+
     private final RecyclerView mRecyclerView;
 
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LayoutManagerInfo mLayoutManagerInfo;
     private ViewBinder<Data> mViewBinder;
     private List<RecyclerView.ItemDecoration> mItemDecorationList;
     private RecyclerView.ItemAnimator mItemAnimator;
 
     public RecyclerViewBuilder(@NonNull RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
-        mLayoutManager = recyclerView.getLayoutManager();
+        mLayoutManagerInfo = new LayoutManagerInfo(mRecyclerView);
         mViewBinder = new DefaultViewBinder<>();
         mItemDecorationList = new ArrayList<>();
     }
 
     public RecyclerViewBuilder<Data> setLayoutManager(
             @NonNull RecyclerView.LayoutManager layoutManager) {
-        mLayoutManager = layoutManager;
+        mLayoutManagerInfo.setLayoutManager(layoutManager);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setHorizontalLinearLayoutManager(boolean reverseLayout) {
+        mLayoutManagerInfo.setLinearLayoutInfo(HORIZONTAL, reverseLayout);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setVerticalLinearLayoutManager(boolean reverseLayout) {
+        mLayoutManagerInfo.setLinearLayoutInfo(VERTICAL, reverseLayout);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setHorizontalGridLayoutManager(
+            @IntRange(from = 1) int spanCount, boolean reverseLayout) {
+        mLayoutManagerInfo.setGridLayoutInfo(HORIZONTAL, spanCount, reverseLayout);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setVerticalGridLayoutManager(
+            @IntRange(from = 1) int spanCount, boolean reverseLayout) {
+        mLayoutManagerInfo.setGridLayoutInfo(VERTICAL, spanCount, reverseLayout);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setHorizontalStaggeredGridLayoutManager(
+            @IntRange(from = 1) int spanCount) {
+        mLayoutManagerInfo.setStaggeredGridLayoutInfo(HORIZONTAL, spanCount);
+        return this;
+    }
+
+    public RecyclerViewBuilder<Data> setVerticalStaggeredGridLayoutManager(
+            @IntRange(from = 1) int spanCount) {
+        mLayoutManagerInfo.setStaggeredGridLayoutInfo(VERTICAL, spanCount);
         return this;
     }
 
@@ -77,7 +119,7 @@ public class RecyclerViewBuilder<Data> {
     }
 
     public ViewAdapter<Data> build() {
-        RecyclerView.LayoutManager layoutManager = getLayoutManager();
+        RecyclerView.LayoutManager layoutManager = mLayoutManagerInfo.getLayoutManager();
         mRecyclerView.setLayoutManager(layoutManager);
 
         GenericAdapter<Data> genericAdapter = new GenericAdapter<>(mViewBinder);
@@ -92,18 +134,80 @@ public class RecyclerViewBuilder<Data> {
         return genericAdapter;
     }
 
-    private RecyclerView.LayoutManager getLayoutManager() {
-        if (mLayoutManager != null) {
-            return mLayoutManager;
-        }
-
-        return new LinearLayoutManager(mRecyclerView.getContext());
-    }
-
-
     public ViewAdapter<Data> build(@NonNull List<Data> dataList) {
         ViewAdapter<Data> viewAdapter = build();
         viewAdapter.setDataList(dataList);
         return viewAdapter;
+    }
+
+
+    private static class LayoutManagerInfo {
+
+        private enum LayoutManagerType {
+            LINEAR, GRID, STAGGERED_GRID,
+        }
+
+        private final RecyclerView mRecyclerView;
+
+        private RecyclerView.LayoutManager mLayoutManager;
+        private LayoutManagerType mLayoutManagerType;
+        private int mOrientation;
+        private int mSpanCount;
+        private boolean mReverseLayout;
+
+        LayoutManagerInfo(@NonNull RecyclerView recyclerView) {
+            mRecyclerView = recyclerView;
+
+            setLinearLayoutInfo(VERTICAL, false);
+
+            setLayoutManager(mRecyclerView.getLayoutManager());
+        }
+
+        void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+            mLayoutManager = layoutManager;
+        }
+
+        void setLinearLayoutInfo(int orientation, boolean reverseLayout) {
+            mLayoutManager = null;
+            mLayoutManagerType = LayoutManagerType.LINEAR;
+            mOrientation = orientation;
+            mReverseLayout = reverseLayout;
+        }
+
+        void setGridLayoutInfo(int orientation,
+                               @IntRange(from = 1) int spanCount,
+                               boolean reverseLayout) {
+            mLayoutManager = null;
+            mLayoutManagerType = LayoutManagerType.GRID;
+            mOrientation = orientation;
+            mSpanCount = (spanCount < 1) ? 1 : spanCount;
+            mReverseLayout = reverseLayout;
+        }
+
+        void setStaggeredGridLayoutInfo(int orientation, @IntRange(from = 1) int spanCount) {
+            mLayoutManager = null;
+            mLayoutManagerType = LayoutManagerType.STAGGERED_GRID;
+            mOrientation = orientation;
+            mSpanCount = (spanCount < 1) ? 1 : spanCount;
+            mReverseLayout = false;
+        }
+
+        private RecyclerView.LayoutManager getLayoutManager() {
+            if (mLayoutManager != null) {
+                return mLayoutManager;
+            }
+
+            Context context = mRecyclerView.getContext();
+            switch (mLayoutManagerType) {
+                case LINEAR:
+                    return new LinearLayoutManager(context, mOrientation, mReverseLayout);
+                case GRID:
+                    return new GridLayoutManager(context, mSpanCount, mOrientation, mReverseLayout);
+                case STAGGERED_GRID:
+                    return new StaggeredGridLayoutManager(mSpanCount, mOrientation);
+                default:
+                    return new LinearLayoutManager(context, VERTICAL, false);
+            }
+        }
     }
 }
