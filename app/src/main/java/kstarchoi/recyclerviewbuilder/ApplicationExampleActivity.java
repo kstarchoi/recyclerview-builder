@@ -25,6 +25,7 @@
 package kstarchoi.recyclerviewbuilder;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -94,24 +95,26 @@ public class ApplicationExampleActivity extends AppCompatActivity {
     }
 
     private Drawable getIconDrawable(ResolveInfo resolveInfo) {
-        String packageName = resolveInfo.activityInfo.packageName;
-        if (mIconDrawableMap.containsKey(packageName)) {
-            return mIconDrawableMap.get(packageName);
+        ActivityInfo activityInfo = resolveInfo.activityInfo;
+        String activityName = activityInfo.name;
+        if (mIconDrawableMap.containsKey(activityName)) {
+            return mIconDrawableMap.get(activityName);
         }
 
-        Drawable iconDrawable = resolveInfo.loadIcon(getPackageManager());
-        mIconDrawableMap.put(packageName, iconDrawable);
+        Drawable iconDrawable = activityInfo.loadIcon(getPackageManager());
+        mIconDrawableMap.put(activityName, iconDrawable);
         return iconDrawable;
     }
 
     private CharSequence getLabel(ResolveInfo resolveInfo) {
-        String packageName = resolveInfo.activityInfo.packageName;
-        if (mLabelMap.containsKey(packageName)) {
-            return mLabelMap.get(packageName);
+        ActivityInfo activityInfo = resolveInfo.activityInfo;
+        String activityName = activityInfo.name;
+        if (mLabelMap.containsKey(activityName)) {
+            return mLabelMap.get(activityName);
         }
 
-        CharSequence label = resolveInfo.loadLabel(getPackageManager());
-        mLabelMap.put(packageName, label);
+        CharSequence label = activityInfo.loadLabel(getPackageManager());
+        mLabelMap.put(activityName, label);
         return label;
     }
 }
