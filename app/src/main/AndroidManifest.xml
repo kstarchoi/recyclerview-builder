@@ -52,6 +52,10 @@
             android:name=".DataControlExampleActivity"
             android:label="@string/example_data_control"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".LayoutManagerExampleActivity"
+            android:label="@string/example_layout_manager"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

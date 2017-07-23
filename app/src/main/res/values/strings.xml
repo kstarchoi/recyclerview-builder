@@ -33,7 +33,11 @@
     <string name="data_control_change_multiple_data">Change multiple data</string>
     <string name="data_control_change_multiple_data_with_payload">Change multiple data with payload</string>
     <string name="data_control_move_data">Move data</string>
+    <string name="layout_manager_linear">Linear</string>
+    <string name="layout_manager_grid">Grid</string>
+    <string name="layout_manager_staggered_grid">Staggered Grid</string>
 
     <string name="example_basic">Basic Example</string>
     <string name="example_data_control">Data control Example</string>
+    <string name="example_layout_manager">LayoutManager Example</string>
 </resources>
