@@ -37,6 +37,8 @@ public interface ViewProvider {
 
     int getViewType();
 
+    <T extends View> T getRoot();
+
     <T extends View> T get(@IdRes int idRes);
 
     boolean hasPayload();

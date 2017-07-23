@@ -79,6 +79,12 @@ class GenericViewHolder extends RecyclerView.ViewHolder
 
     @SuppressWarnings("unchecked")
     @Override
+    public <T extends View> T getRoot() {
+        return (T) itemView;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public <T extends View> T get(@IdRes int idRes) {
         return (T) mViewSparseArray.get(idRes);
     }
