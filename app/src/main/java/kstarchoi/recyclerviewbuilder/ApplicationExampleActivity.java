@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,7 +74,7 @@ public class ApplicationExampleActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void bind(ViewProvider provider, int index, ResolveInfo resolveInfo) {
+                    public void bind(ViewProvider provider, int index, final ResolveInfo resolveInfo) {
                         ImageView iconView = provider.get(android.R.id.icon1);
                         iconView.setImageDrawable(getIconDrawable(resolveInfo));
 
@@ -82,6 +83,13 @@ public class ApplicationExampleActivity extends AppCompatActivity {
 
                         TextView packageNameView = provider.get(android.R.id.text2);
                         packageNameView.setText(resolveInfo.activityInfo.packageName);
+
+                        provider.getRoot().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(resolveInfo);
+                            }
+                        });
                     }
                 })
                 .addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -116,5 +124,11 @@ public class ApplicationExampleActivity extends AppCompatActivity {
         CharSequence label = activityInfo.loadLabel(getPackageManager());
         mLabelMap.put(activityName, label);
         return label;
+    }
+
+    private void startActivity(ResolveInfo resolveInfo) {
+        String packageName = resolveInfo.activityInfo.packageName;
+        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+        startActivity(intent);
     }
 }

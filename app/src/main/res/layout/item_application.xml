@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ MIT License
   ~
   ~ Copyright (c) 2017 Gwangseong Choi
@@ -27,6 +28,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:paddingBottom="8dp"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
