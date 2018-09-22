@@ -26,6 +26,7 @@ package kstarchoi.lib.recyclerview.builder.typefree;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,6 +39,7 @@ import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Gwangseong Choi
@@ -55,6 +57,7 @@ public class RecyclerViewBuilder {
     private final LayoutInfo layoutInfo;
     private final ArrayList<ItemDecoration> itemDecorationList;
     private ItemAnimator itemAnimator;
+    private final ViewBindHelper viewBindHelper;
 
     public RecyclerViewBuilder(@NonNull RecyclerView recyclerView) {
         AssertionHelper.notNull("recyclerView", recyclerView);
@@ -63,6 +66,7 @@ public class RecyclerViewBuilder {
         this.layoutInfo = new LayoutInfo(recyclerView);
         this.itemDecorationList = new ArrayList<>();
         this.itemAnimator = new DefaultItemAnimator();
+        this.viewBindHelper = new ViewBindHelper();
     }
 
 
@@ -137,7 +141,17 @@ public class RecyclerViewBuilder {
     }
 
 
-    public void build() {
+    public RecyclerViewBuilder addViewBinder(@LayoutRes int layoutRes,
+                                             @NonNull ViewBinder<?> viewBinder) {
+        AssertionHelper.exist("layoutRes", layoutRes, recyclerView.getResources());
+        AssertionHelper.notNull("viewBinder", viewBinder);
+
+        viewBindHelper.put(layoutRes, viewBinder);
+        return this;
+    }
+
+
+    public ViewAdapter build() {
         recyclerView.setLayoutManager(layoutInfo.getManager());
 
         recyclerView.invalidateItemDecorations();
@@ -146,6 +160,17 @@ public class RecyclerViewBuilder {
         }
 
         recyclerView.setItemAnimator(itemAnimator);
+
+        ViewAdapterImpl viewAdapterImpl = new ViewAdapterImpl(viewBindHelper);
+        recyclerView.setAdapter(viewAdapterImpl);
+
+        return viewAdapterImpl;
+    }
+
+    public ViewAdapter build(@NonNull List<?> dataList) {
+        ViewAdapter viewAdapter = build();
+        viewAdapter.setDataList(dataList);
+        return viewAdapter;
     }
 
 

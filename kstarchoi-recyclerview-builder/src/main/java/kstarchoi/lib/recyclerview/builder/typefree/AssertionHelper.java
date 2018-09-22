@@ -24,6 +24,10 @@
 
 package kstarchoi.lib.recyclerview.builder.typefree;
 
+import android.content.res.Resources;
+import android.support.annotation.AnyRes;
+import android.util.SparseArray;
+
 import junit.framework.Assert;
 
 import java.util.List;
@@ -45,8 +49,34 @@ final class AssertionHelper {
     }
 
 
+    static void exist(String name, @AnyRes int anyRes, Resources resources) {
+        String resourceName = getResourceName(resources, anyRes);
+        exist(name, resourceName != null);
+    }
+
+    static void exist(String name, boolean condition) {
+        Assert.assertTrue(String.format("%s not exist", name), condition);
+    }
+
+
     static void notExist(String name, Object object, List<?> baseList) {
-        Assert.assertTrue(String.format("%s already exist", name), !baseList.contains(object));
+        notExist(name, !baseList.contains(object));
+    }
+
+    static void notExist(String name, int key, SparseArray<?> sparseArray) {
+        notExist(name, sparseArray.get(key) == null);
+    }
+
+    private static void notExist(String name, boolean condition) {
+        Assert.assertTrue(String.format("%s already exist", name), condition);
+    }
+
+    private static String getResourceName(Resources resources, @AnyRes int resId) {
+        try {
+            return resources.getResourceName(resId);
+        } catch (Resources.NotFoundException e) {
+            return null;
+        }
     }
 
 
