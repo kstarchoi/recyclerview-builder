@@ -41,4 +41,5 @@
     <string name="example_data_control">Data control Example</string>
     <string name="example_layout_manager">LayoutManager Example</string>
     <string name="example_application">Application Example</string>
+    <string name="example_type_free">TypeFree Example</string>
 </resources>

@@ -60,6 +60,10 @@
             android:name=".ApplicationExampleActivity"
             android:label="@string/example_application"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".TypeFreeExampleActivity"
+            android:label="@string/example_type_free"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
