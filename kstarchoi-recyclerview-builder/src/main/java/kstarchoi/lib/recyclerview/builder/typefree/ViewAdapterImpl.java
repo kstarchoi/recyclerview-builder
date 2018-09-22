@@ -157,9 +157,9 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
     @Override
     public void removeDataAt(@IntRange(from = 0) int index, int... indexArray) {
-        int dataCount = dataList.size();
-        AssertionHelper.interior("index", index, 0, dataCount);
-        AssertionHelper.interior("index", indexArray, 0, dataCount);
+        int lastDataIndex = dataList.size() - 1;
+        AssertionHelper.interior("index", index, 0, lastDataIndex);
+        AssertionHelper.interior("index", indexArray, 0, lastDataIndex);
 
         ArrayList<Integer> dataIndexList = new ArrayList<>();
         dataIndexList.add(index);
@@ -186,11 +186,11 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
     @Override
     public void removeDataFrom(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount) {
-        int adapterDataCount = dataList.size();
+        int lastDataIndex = dataList.size() - 1;
         int lastIndex = index + dataCount - 1;
-        AssertionHelper.interior("index", index, 0, adapterDataCount);
+        AssertionHelper.interior("index", index, 0, lastDataIndex);
         AssertionHelper.greaterThanOrEqualTo("dataCount", dataCount, 1);
-        AssertionHelper.interior("lastIndex", lastIndex, 0, adapterDataCount);
+        AssertionHelper.interior("lastIndex", lastIndex, 0, lastDataIndex);
 
         for (int i = lastIndex; i >= index; i--) {
             dataList.remove(i);
