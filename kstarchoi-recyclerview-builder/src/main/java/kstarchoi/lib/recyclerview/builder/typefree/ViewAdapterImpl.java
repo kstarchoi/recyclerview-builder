@@ -43,9 +43,11 @@ import java.util.List;
 final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> implements ViewAdapter {
 
     private final ArrayList<Object> dataList = new ArrayList<>();
+    private final RecyclerView recyclerView;
     private final ViewBindHelper viewBindHelper;
 
-    ViewAdapterImpl(ViewBindHelper viewBindHelper) {
+    ViewAdapterImpl(RecyclerView recyclerView, ViewBindHelper viewBindHelper) {
+        this.recyclerView = recyclerView;
         this.viewBindHelper = viewBindHelper;
     }
 
@@ -80,6 +82,11 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
     // =============================================================================================
     // ViewAdapter interface
     // =============================================================================================
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 
     @Override
     public void setDataList(@NonNull List<?> dataList) {

@@ -26,6 +26,7 @@ package kstarchoi.lib.recyclerview.builder.typefree;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ import java.util.List;
  */
 
 public interface ViewAdapter {
+
+    RecyclerView getRecyclerView();
 
     void setDataList(@NonNull List<?> dataList);
 

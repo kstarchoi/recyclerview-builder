@@ -161,7 +161,7 @@ public class RecyclerViewBuilder {
 
         recyclerView.setItemAnimator(itemAnimator);
 
-        ViewAdapterImpl viewAdapterImpl = new ViewAdapterImpl(viewBindHelper);
+        ViewAdapterImpl viewAdapterImpl = new ViewAdapterImpl(recyclerView, viewBindHelper);
         recyclerView.setAdapter(viewAdapterImpl);
 
         return viewAdapterImpl;
