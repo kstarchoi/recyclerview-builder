@@ -26,7 +26,7 @@ package kstarchoi.lib.recyclerview.builder.typefree;
 
 /**
  * @author Gwangseong Choi
- * @since 2018-02-22
+ * @since 2018-09-22
  */
 
 public class RecyclerViewBuilder {
