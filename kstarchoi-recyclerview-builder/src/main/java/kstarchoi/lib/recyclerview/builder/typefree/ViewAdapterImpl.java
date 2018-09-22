@@ -50,10 +50,6 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
     }
 
 
-    private Object getData(int index) {
-        return dataList.get(index);
-    }
-
     @Override
     public int getItemViewType(int position) {
         return viewBindHelper.getViewType(getData(position));
@@ -94,15 +90,39 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
         notifyDataSetChanged();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getData(@IntRange(from = 0) int index) {
+        AssertionHelper.interior("index", index, 0, getLastDataIndex());
+
+        return (T) dataList.get(index);
+    }
+
+    @Override
+    public int getDataIndex(@NonNull Object data) {
+        AssertionHelper.notNull("data", data);
+
+        return dataList.indexOf(data);
+    }
+
+    private int getLastDataIndex() {
+        return getDataCount() - 1;
+    }
+
+    @Override
+    public int getDataCount() {
+        return getItemCount();
+    }
+
     @Override
     public void insertData(@NonNull Object data, Object... dataArray) {
-        insertDataTo(dataList.size(), data, dataArray);
+        insertDataTo(getDataCount(), data, dataArray);
     }
 
     @Override
     public void insertDataTo(@IntRange(from = 0) int index,
                              @NonNull Object data, Object... dataArray) {
-        AssertionHelper.interior("index", index, 0, dataList.size());
+        AssertionHelper.interior("index", index, 0, getDataCount());
         AssertionHelper.notNull("data", data);
         AssertionHelper.notContains("null", null, dataArray);
 
@@ -117,12 +137,12 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
     @Override
     public void insertDataAll(@NonNull List<?> dataList) {
-        insertDataAllTo(this.dataList.size(), dataList);
+        insertDataAllTo(getDataCount(), dataList);
     }
 
     @Override
     public void insertDataAllTo(@IntRange(from = 0) int index, @NonNull List<?> dataList) {
-        AssertionHelper.interior("index", index, 0, this.dataList.size());
+        AssertionHelper.interior("index", index, 0, getDataCount());
         AssertionHelper.notNull("dataList", dataList);
         AssertionHelper.notContains("null", null, dataList);
 
@@ -157,7 +177,7 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
     @Override
     public void removeDataAt(@IntRange(from = 0) int index, int... indexArray) {
-        int lastDataIndex = dataList.size() - 1;
+        int lastDataIndex = getLastDataIndex();
         AssertionHelper.interior("index", index, 0, lastDataIndex);
         AssertionHelper.interior("index", indexArray, 0, lastDataIndex);
 
@@ -186,7 +206,7 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
     @Override
     public void removeDataFrom(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount) {
-        int lastDataIndex = dataList.size() - 1;
+        int lastDataIndex = getLastDataIndex();
         int lastIndex = index + dataCount - 1;
         AssertionHelper.interior("index", index, 0, lastDataIndex);
         AssertionHelper.greaterThanOrEqualTo("dataCount", dataCount, 1);

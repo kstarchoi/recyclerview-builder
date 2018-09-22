@@ -38,6 +38,12 @@ public interface ViewAdapter {
 
     void setDataList(@NonNull List<?> dataList);
 
+    <T> T getData(@IntRange int index);
+
+    int getDataIndex(@NonNull Object data);
+
+    int getDataCount();
+
     void insertData(@NonNull Object data, Object... dataArray);
 
     void insertDataTo(@IntRange(from = 0) int index, @NonNull Object data, Object... dataArray);
