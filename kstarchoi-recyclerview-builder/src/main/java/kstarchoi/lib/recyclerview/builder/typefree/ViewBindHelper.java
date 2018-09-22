@@ -28,6 +28,8 @@ import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
+import java.util.List;
+
 /**
  * @author Gwangseong Choi
  * @since 2018-09-22
@@ -60,5 +62,23 @@ final class ViewBindHelper {
 
     ViewBinderImpl<?> getViewBinderImpl(Object data) {
         return viewBinderImplSparseArray.get(getViewType(data));
+    }
+
+
+    void checkBoundDataType(Object data, Object... dataArray) {
+        AssertionHelper.bound(data.getClass().getName(), getViewType(data),
+                viewBinderImplSparseArray);
+
+        for (Object aData : dataArray) {
+            AssertionHelper.bound(aData.getClass().getName(), getViewType(aData),
+                    viewBinderImplSparseArray);
+        }
+    }
+
+    void checkBoundDataType(List<?> dataList) {
+        for (Object aData : dataList) {
+            AssertionHelper.bound(aData.getClass().getName(), getViewType(aData),
+                    viewBinderImplSparseArray);
+        }
     }
 }

@@ -80,9 +80,46 @@ final class AssertionHelper {
     }
 
 
+    static void bound(String name, int key, SparseArray<?> sparseArray) {
+        Assert.assertTrue(String.format("%s not bound", name), sparseArray.get(key) != null);
+    }
+
+
+    static void notContains(String name, Object object, Object[] baseArray) {
+        boolean found = false;
+        for (Object baseObject : baseArray) {
+            if (found = (baseObject == object)) {
+                break;
+            }
+        }
+        notContains(name, !found);
+    }
+
+    static void notContains(String name, Object object, List<?> baseList) {
+        boolean found = false;
+        for (Object baseObject : baseList) {
+            if (found = (baseObject == object)) {
+                break;
+            }
+        }
+        notContains(name, !found);
+    }
+
+    private static void notContains(String name, boolean condition) {
+        Assert.assertTrue(String.format("%s should not be contained", name), condition);
+    }
+
+
     static void greaterThanOrEqualTo(String name, int value, int baseValue) {
         String message = String.format(Locale.getDefault(),
                 "%s must be ≥ %d (was %d)", name, baseValue, value);
         Assert.assertTrue(message, value >= baseValue);
+    }
+
+
+    static void interior(String name, int value, int low, int high) {
+        String message = String.format(Locale.getDefault(),
+                "%s must be %d ≤ value ≤ %d (was %d)", name, low, high, value);
+        Assert.assertTrue(message, (value >= low) && (value <= high));
     }
 }

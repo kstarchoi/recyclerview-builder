@@ -24,6 +24,7 @@
 
 package kstarchoi.lib.recyclerview.builder.typefree;
 
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -90,5 +91,43 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
         this.dataList.clear();
         this.dataList.addAll(dataList);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void insertData(@NonNull Object data, Object... dataArray) {
+        insertDataTo(dataList.size(), data, dataArray);
+    }
+
+    @Override
+    public void insertDataTo(@IntRange(from = 0) int index,
+                             @NonNull Object data, Object... dataArray) {
+        AssertionHelper.interior("index", index, 0, dataList.size());
+        AssertionHelper.notNull("data", data);
+        AssertionHelper.notContains("null", null, dataArray);
+
+        viewBindHelper.checkBoundDataType(data, dataArray);
+
+        for (int i = dataArray.length - 1; i >= 0; i--) {
+            dataList.add(index, dataArray[i]);
+        }
+        dataList.add(index, data);
+        notifyItemRangeInserted(index, 1 + dataArray.length);
+    }
+
+    @Override
+    public void insertDataAll(@NonNull List<?> dataList) {
+        insertDataAllTo(this.dataList.size(), dataList);
+    }
+
+    @Override
+    public void insertDataAllTo(@IntRange(from = 0) int index, @NonNull List<?> dataList) {
+        AssertionHelper.interior("index", index, 0, this.dataList.size());
+        AssertionHelper.notNull("dataList", dataList);
+        AssertionHelper.notContains("null", null, dataList);
+
+        viewBindHelper.checkBoundDataType(dataList);
+
+        this.dataList.addAll(index, dataList);
+        notifyItemRangeInserted(index, dataList.size());
     }
 }

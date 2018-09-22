@@ -24,6 +24,7 @@
 
 package kstarchoi.lib.recyclerview.builder.typefree;
 
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import java.util.List;
@@ -36,4 +37,12 @@ import java.util.List;
 public interface ViewAdapter {
 
     void setDataList(@NonNull List<?> dataList);
+
+    void insertData(@NonNull Object data, Object... dataArray);
+
+    void insertDataTo(@IntRange(from = 0) int index, @NonNull Object data, Object... dataArray);
+
+    void insertDataAll(@NonNull List<?> dataList);
+
+    void insertDataAllTo(@IntRange(from = 0) int index, @NonNull List<?> dataList);
 }
