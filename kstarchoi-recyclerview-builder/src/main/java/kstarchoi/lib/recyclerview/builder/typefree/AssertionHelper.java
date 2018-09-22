@@ -122,4 +122,12 @@ final class AssertionHelper {
                 "%s must be %d ≤ value ≤ %d (was %d)", name, low, high, value);
         Assert.assertTrue(message, (value >= low) && (value <= high));
     }
+
+    static void interior(String name, int[] values, int low, int high) {
+        for (int value : values) {
+            String message = String.format(Locale.getDefault(),
+                    "%s must be %d ≤ value ≤ %d (was %d)", name, low, high, value);
+            Assert.assertTrue(message, (value >= low) && (value <= high));
+        }
+    }
 }

@@ -45,4 +45,12 @@ public interface ViewAdapter {
     void insertDataAll(@NonNull List<?> dataList);
 
     void insertDataAllTo(@IntRange(from = 0) int index, @NonNull List<?> dataList);
+
+    void removeData(@NonNull Object data, Object... dataArray);
+
+    void removeDataAll(@NonNull List<?> dataList);
+
+    void removeDataAt(@IntRange(from = 0) int index, int... indexArray);
+
+    void removeDataFrom(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount);
 }

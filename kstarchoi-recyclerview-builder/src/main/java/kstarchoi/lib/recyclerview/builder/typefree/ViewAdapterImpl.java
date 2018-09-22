@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -129,5 +130,71 @@ final class ViewAdapterImpl extends RecyclerView.Adapter<ViewHolderImpl> impleme
 
         this.dataList.addAll(index, dataList);
         notifyItemRangeInserted(index, dataList.size());
+    }
+
+    @Override
+    public void removeData(@NonNull Object data, Object... dataArray) {
+        ArrayList<Integer> dataIndexList = new ArrayList<>();
+        dataIndexList.add(dataList.indexOf(data));
+        for (Object aData : dataArray) {
+            dataIndexList.add(dataList.indexOf(aData));
+        }
+
+        removeData(dataIndexList);
+    }
+
+    @Override
+    public void removeDataAll(@NonNull List<?> dataList) {
+        AssertionHelper.notNull("dataList", dataList);
+
+        ArrayList<Integer> dataIndexList = new ArrayList<>();
+        for (Object data : dataList) {
+            dataIndexList.add(this.dataList.indexOf(data));
+        }
+
+        removeData(dataIndexList);
+    }
+
+    @Override
+    public void removeDataAt(@IntRange(from = 0) int index, int... indexArray) {
+        int dataCount = dataList.size();
+        AssertionHelper.interior("index", index, 0, dataCount);
+        AssertionHelper.interior("index", indexArray, 0, dataCount);
+
+        ArrayList<Integer> dataIndexList = new ArrayList<>();
+        dataIndexList.add(index);
+        for (int aIndex : indexArray) {
+            dataIndexList.add(aIndex);
+        }
+
+        removeData(dataIndexList);
+    }
+
+    private void removeData(List<Integer> dataIndexList) {
+        Collections.sort(dataIndexList);
+
+        for (int i = dataIndexList.size() - 1; i >= 0; i--) {
+            int dataIndex = dataIndexList.get(i);
+            if (dataIndex < 0) {
+                break;
+            }
+
+            dataList.remove(dataIndex);
+            notifyItemRemoved(dataIndex);
+        }
+    }
+
+    @Override
+    public void removeDataFrom(@IntRange(from = 0) int index, @IntRange(from = 1) int dataCount) {
+        int adapterDataCount = dataList.size();
+        int lastIndex = index + dataCount - 1;
+        AssertionHelper.interior("index", index, 0, adapterDataCount);
+        AssertionHelper.greaterThanOrEqualTo("dataCount", dataCount, 1);
+        AssertionHelper.interior("lastIndex", lastIndex, 0, adapterDataCount);
+
+        for (int i = lastIndex; i >= index; i--) {
+            dataList.remove(i);
+        }
+        notifyItemRangeRemoved(index, dataCount);
     }
 }
