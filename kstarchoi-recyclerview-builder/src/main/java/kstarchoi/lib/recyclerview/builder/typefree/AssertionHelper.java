@@ -28,7 +28,7 @@ import android.content.res.Resources;
 import android.support.annotation.AnyRes;
 import android.util.SparseArray;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import java.util.List;
 import java.util.Locale;
