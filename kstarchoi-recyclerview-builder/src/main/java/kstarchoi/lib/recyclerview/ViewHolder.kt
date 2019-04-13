@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2017 Gwangseong Choi
+ * Copyright (c) 2019 Gwangseong Choi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,18 @@
  * SOFTWARE.
  */
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
+package kstarchoi.lib.recyclerview
 
-android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+import android.content.Context
+import android.view.View
 
-    defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
+interface ViewHolder {
 
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
+    fun <T : View> get(resId: Int): T
 
-repositories {
-    mavenCentral()
+    fun <T : View> getRoot(): T
+
+    fun getContext(): Context
+
+    fun getDataPosition(): Int
 }
