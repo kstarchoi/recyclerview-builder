@@ -30,6 +30,10 @@ import java.lang.reflect.Type
 internal object ReflectionHelper {
 
     fun getGenericSuperclassParameterType(any: Any): Type {
-        return (any.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+        return try {
+            (any.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+        } catch (e: Exception) {
+            (any.javaClass.superclass?.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+        }
     }
 }
