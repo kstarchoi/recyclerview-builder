@@ -26,4 +26,9 @@ package kstarchoi.lib.recyclerview
 
 import android.support.annotation.LayoutRes
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 abstract class MultiItemViewBinder<T>(@LayoutRes layoutRes: Int) : ViewBinder<T>(layoutRes)

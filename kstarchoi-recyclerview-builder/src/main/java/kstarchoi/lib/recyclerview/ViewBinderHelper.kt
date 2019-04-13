@@ -26,6 +26,11 @@ package kstarchoi.lib.recyclerview
 
 import java.lang.reflect.Type
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 internal class ViewBinderHelper {
 
     private val viewBinderMap = mutableMapOf<Int, ViewBinder<*>>()

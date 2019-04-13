@@ -27,6 +27,11 @@ package kstarchoi.lib.recyclerview
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 internal object ReflectionHelper {
 
     fun getGenericSuperclassParameterType(any: Any): Type {

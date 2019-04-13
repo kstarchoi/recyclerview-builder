@@ -28,6 +28,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 internal class ViewAdapterImpl(private val recyclerView: RecyclerView,
                                private val viewBinderHelper: ViewBinderHelper)
     : RecyclerView.Adapter<ViewHolderImpl>(), ViewAdapter {

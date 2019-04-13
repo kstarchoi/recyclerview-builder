@@ -28,6 +28,11 @@ import android.support.annotation.IntRange
 import android.support.annotation.NonNull
 import android.support.v7.widget.*
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 class RecyclerViewBuilder(private val recyclerView: RecyclerView) {
 
     companion object {

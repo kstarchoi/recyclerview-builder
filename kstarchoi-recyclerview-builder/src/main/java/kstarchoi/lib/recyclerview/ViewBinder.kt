@@ -27,6 +27,11 @@ package kstarchoi.lib.recyclerview
 import android.support.annotation.LayoutRes
 import android.support.annotation.NonNull
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 abstract class ViewBinder<T>(@LayoutRes private val layoutRes: Int) {
 
     internal fun getLayoutRes(): Int = layoutRes

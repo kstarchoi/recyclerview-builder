@@ -27,6 +27,11 @@ package kstarchoi.lib.recyclerview
 import android.content.Context
 import android.view.View
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 interface ViewHolder {
 
     fun <T : View> get(resId: Int): T

@@ -26,6 +26,11 @@ package kstarchoi.lib.recyclerview
 
 import android.support.v7.widget.RecyclerView
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 interface ViewAdapter {
 
     fun getRecyclerView(): RecyclerView

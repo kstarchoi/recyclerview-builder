@@ -29,6 +29,11 @@ import android.support.annotation.IdRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
+/**
+ * @author Gwangseong Choi
+ * @since 2019-04-13
+ */
+
 internal class ViewHolderImpl(itemView: View)
     : RecyclerView.ViewHolder(itemView), ViewHolder {
 
